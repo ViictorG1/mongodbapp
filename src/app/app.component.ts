@@ -20,6 +20,36 @@ export class AppComponent implements OnInit {
     this.loadStudents();
   }
 
+  onEdit(student: any) {
+    this.appService
+      .updateStudent(student)
+      .subscribe((student: any) => {
+        console.log(student);
+      }, (error: any) => {
+        // TODO: Handle error
+        console.warn(error);
+      });
+  }
+
+  onDelete(student: any) {
+    this.appService
+      .deleteStudent(student._id)
+      .subscribe((del: any) => {
+        if (del) {
+          let index: number = this.students.indexOf(student);
+
+          if (index >= 0) {
+            this.students.splice(index, 1);
+          }
+        } else {
+          console.warn("Não foi possível deletar o aluno");
+        }
+      }, (error: any) => {
+        // TODO: Handle error
+        console.warn(error);git 
+      });
+  }
+
   private loadStudents() {
     this.appService
       .getStudents()
