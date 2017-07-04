@@ -1,0 +1,31 @@
+<!--The whole content below can be removed with the new code.-->
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Gerenciador de alunos</a>
+    </div>
+    <p class="navbar-text navbar-right">Projeto criado por Victor Magalhães e Rangel Leonardo</p>    
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <ul class="media-list">
+    <li class="media" *ngFor="let student of students">
+      <div class="media-left">
+        <a href="#">
+          <img class="media-object" src="https://scontent.ffln1-1.fna.fbcdn.net/v/t1.0-1/p40x40/12745696_968307873258335_9049239180154126092_n.jpg?oh=a9b5d84898bfc7a0ce175bff71cb23cf&oe=5A04A9E5" alt="...">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">{{ student.name }}</h4>
+        Média: {{ student.average }} | Status: <span *ngIf="student.status==='true'">NOTA FECHADA</span><span *ngIf="student.status=='false'">NOTA TRANCADA</span><span *ngIf="student.status=='pending'">NOTA PENDENTE</span>
+        <button (click)="onDelete(student)" type="button" class="btn btn-link pull-right">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        <button (click)="onEdit(student)" type="button" class="btn btn-link pull-right">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

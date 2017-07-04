@@ -1,0 +1,16 @@
+.navbar-default {
+    background-image: linear-gradient(to bottom, #3595a0,#3ba0ab 100%);
+    border-color: #E7E7E7;
+}
+
+.navbar-brand {
+  color: #fff;
+}
+
+.navbar-brand:hover {
+  color: #fff;
+}
+
+.navbar-text {
+  color: #fff;
+}
