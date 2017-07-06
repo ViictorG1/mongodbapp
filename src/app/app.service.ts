@@ -24,9 +24,10 @@ export class AppService extends RestClientService {
     return this.http
       .get(this.collectionPath(), this.buildRequestOptions())
       .map((response: Response) => {
-        const students = this.extract<any[]>(response);
-        console.log(students);
-        return students;
+        let students = this.extract<any[]>(response);
+        return students = students.map((student: any) => {
+          return student = this.unmarshalStudent(student);
+        });
       })
       .catch(this.handleError);
   }
@@ -57,7 +58,8 @@ export class AppService extends RestClientService {
     return this.http
       .put(this.elementPath(data.id), body, this.buildRequestOptions())
       .map((response: Response) => {
-        return this.extract<any>(response);
+        let student = this.extract<any>(response);
+        return this.unmarshalStudent(student);
       })
       .catch(this.handleError);
   }
@@ -75,9 +77,27 @@ export class AppService extends RestClientService {
     return {
       _id: student.id,
       name: student.name,
-      status: [ student.status ],
-      average: student.average
+      average: student.average,
+      nota1: student.nota1,
+      nota2: student.nota2,
+      nota3: student.nota3
     };
+  }
+
+  private unmarshalStudent(student: any): any {
+    return {
+      id: student._id,
+      name: student.name,
+      nota1: student.nota1,
+      nota2: student.nota2,
+      nota3: student.nota3,
+      average: this.calcAverage(student.nota1, student.nota2, student.nota3)
+    }
+  }
+
+  private calcAverage(nota1, nota2, nota3) {
+    let calc = (nota1 + nota2 + nota3) / 3;
+    return calc.toFixed(1);
   }
 
   private collectionPath(): string {

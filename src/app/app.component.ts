@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { AppService } from './app.service';
 
@@ -10,10 +11,17 @@ import { AppService } from './app.service';
 export class AppComponent implements OnInit {
   
   students: any[] = [];
+  editing: boolean = false;
+  data: any = {};
+  editingStudent: any;
+
+  private el: HTMLElement;
 
   constructor(
     private appService: AppService,
+    el: ElementRef
   ) {
+    this.el = el.nativeElement;
   }
 
   ngOnInit() {
@@ -21,14 +29,28 @@ export class AppComponent implements OnInit {
   }
 
   onEdit(student: any) {
-    this.appService
-      .updateStudent(student)
-      .subscribe((student: any) => {
-        console.log(student);
-      }, (error: any) => {
-        // TODO: Handle error
-        console.warn(error);
-      });
+    this.editing = true;
+    student.showInfo = true;
+    this.data = student;
+    this.editingStudent = this.data;
+  }
+
+  onSubmit(form: NgForm) {
+    if(form.valid) {
+      this.appService
+        .updateStudent(this.data)
+        .subscribe((student: any) => {
+          let index: number = this.students.indexOf(this.editingStudent);
+
+          if (index >= 0) {
+            this.students.splice(index, 1, student);
+            this.onCancel();            
+          }
+        }, (error: any) => {
+          // TODO: Handle error
+          console.warn(error);
+        });
+    }
   }
 
   onDelete(student: any) {
@@ -46,16 +68,20 @@ export class AppComponent implements OnInit {
         }
       }, (error: any) => {
         // TODO: Handle error
-        console.warn(error);git 
+        console.warn(error);
       });
+  }
+
+  onCancel() {
+    this.editing = false;
   }
 
   private loadStudents() {
     this.appService
       .getStudents()
       .subscribe((students: any[]) => {
-        console.log(students);
         this.students = students;
+        console.log(students);        
       }, (error: any) => {
         // TODO: Handle error
         console.warn(error);

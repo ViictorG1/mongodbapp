@@ -1,31 +1,79 @@
-<!--The whole content below can be removed with the new code.-->
-<nav class="navbar navbar-default navbar-static-top">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Gerenciador de alunos</a>
+<nav class="navbar">
+  <a class="navbar-item">
+    <img src="https://webassets.mongodb.com/_com_assets/cms/MongoDB-Logo-5c3a7405a85675366beb3a5ec4c032348c390b3f142f5e6dddf1d78e2df5cb5c.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+  </a>
+
+  <div id="navMenuExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item " href="http://bulma.io/">
+        Home
+      </a>
     </div>
-    <p class="navbar-text navbar-right">Projeto criado por Victor Magalhães e Rangel Leonardo</p>    
   </div>
 </nav>
 
-<div class="container-fluid">
-  <ul class="media-list">
-    <li class="media" *ngFor="let student of students">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object" src="https://scontent.ffln1-1.fna.fbcdn.net/v/t1.0-1/p40x40/12745696_968307873258335_9049239180154126092_n.jpg?oh=a9b5d84898bfc7a0ce175bff71cb23cf&oe=5A04A9E5" alt="...">
-        </a>
+<section class="hero is-dark">
+  <div class="hero-body">
+    <p class="title">
+      Gerencie seus alunos
+    </p>
+    <p class="subtitle">
+      Organize os alunos e suas médias.
+    </p>
+  </div>
+</section>
+
+<div class="columns">
+  <div class="column">
+    <div class="notification is-info">
+      <div class="box" *ngFor="let student of students">
+        <!-- Main container -->
+        <nav class="level">
+          <!-- Left side -->
+          <div class="level-left">
+            <div class="level-item">
+              <article class="media">
+                <figure class="media-left">
+                  <p class="image is-64x64">
+                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                  </p>
+                </figure>
+                <div class="media-content">
+                  <div class="content">
+                    <p class="text-student">
+                      <strong>{{ student.name }}</strong><br>
+                      Notas: {{ student.nota1 }} / {{ student.nota2 }} / {{ student.nota3 }}<br>
+                      <small>Média parcial: {{ student.average }}</small>
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+          <!-- Right side -->
+          <div class="level-right">
+            <p class="level-item"><a (click)="onEdit(student)" class="button is-info">Editar</a></p>
+            <p class="level-item"><a (click)="onDelete(student)" class="button is-danger">Deletar</a></p>
+          </div>
+        </nav>
+        <form *ngIf="student.showInfo" #sForm="ngForm" (submit)="onSubmit(sForm)" novalidate>
+          <div class="field notification">
+            <p class="control w-20">
+              <input class="input is-info" name="name" [(ngModel)]="data.name" type="text" placeholder="Nome">
+            </p><br>
+            <p class="control">
+              <input class="input is-info w-20" name="nota1" [(ngModel)]="data.nota1" type="text" placeholder="Nota 1">
+              <input class="input is-info w-20" name="nota2" [(ngModel)]="data.nota2" type="text" placeholder="Nota 2">
+              <input class="input is-info w-20" name="nota3" [(ngModel)]="data.nota3" type="text" placeholder="Nota 3">
+            </p>
+            <p class="control mt-30">
+              <button class="button is-success" type="submit">Salvar</button>
+              <button class="button is-danger" (click)="onCancel()">Cancelar</button>
+            </p>
+          </div>
+        </form>
       </div>
-      <div class="media-body">
-        <h4 class="media-heading">{{ student.name }}</h4>
-        Média: {{ student.average }} | Status: <span *ngIf="student.status==='true'">NOTA FECHADA</span><span *ngIf="student.status=='false'">NOTA TRANCADA</span><span *ngIf="student.status=='pending'">NOTA PENDENTE</span>
-        <button (click)="onDelete(student)" type="button" class="btn btn-link pull-right">
-          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-        </button>
-        <button (click)="onEdit(student)" type="button" class="btn btn-link pull-right">
-          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-        </button>
-      </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
+
